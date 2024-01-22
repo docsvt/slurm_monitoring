@@ -1,0 +1,15 @@
+---
+nodes:
+  - name: promethues
+    box: ubuntu/jammy64
+    ram: 2046
+    cpu: 2
+    networks:
+      - name: proxy_back
+        ip: 192.168.200.61
+    forwards:
+      - name: ssh 
+        host: "22061"
+        guest: "22"
+    ssh_pub_keys: 
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL43ZBKy4GDFcbI5Od3I4ZrvheH4qNH5amExUqFHQIm4 fa@ansible-control"

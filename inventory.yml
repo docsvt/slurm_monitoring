@@ -1,0 +1,15 @@
+---
+all:
+  hosts:
+    prometheus:
+      ansible_host: "192.168.101.61"
+  children:
+    node_exporter:
+      hosts:
+        prometheus:
+    elk:
+      hosts:
+        prometheus:
+    fluentbit:
+      hosts:
+        prometheus:
