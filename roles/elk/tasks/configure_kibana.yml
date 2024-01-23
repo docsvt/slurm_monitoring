@@ -1,0 +1,26 @@
+- name: Configure Kibana
+  ansible.builtin.template:
+    src: "{{ item | basename }}.j2"
+    dest: "{{ item }}"
+    owner: root
+    group: kibana
+    mode: "660"
+  with_items:
+    - /etc/kibana/kibana.yml
+  notify: restart kibana
+
+- name: Force a restart if configuration has changed.
+  ansible.builtin.meta: flush_handlers
+
+- name: Start Kibana
+  ansible.builtin.systemd:
+    name: kibana
+    state: "{{ elk_kibana_service_state }}"
+    enabled: "{{ elk_kibana_service_enabled }}"
+
+- name: Make sure Kibana is running before proceeding
+  ansible.builtin.wait_for:
+    host: "{{ elk_kibana_network_host }}"
+    port: "{{ elk_kibana_http_port }}"
+    delay: 3
+    timeout: 300

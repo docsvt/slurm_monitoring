@@ -1,0 +1,22 @@
+- name: Configure fluentbit
+  ansible.builtin.template:
+    src: "{{ item | basename }}.j2"
+    dest: "{{ item }}"
+    owner: root
+    group: root
+    mode: "0660"
+  with_items:
+    - /etc/fluent-bit/fluent-bit.conf
+    - /etc/fluent-bit/filters.conf
+    - /etc/fluent-bit/inputs.conf
+    - /etc/fluent-bit/outputs.conf
+  notify: restart fluentbit
+
+- name: Force a restart if configuration has changed.
+  ansible.builtin.meta: flush_handlers
+
+- name: Start fluentbit
+  ansible.builtin.systemd:
+    name: fluent-bit
+    state: "{{ fluentbit_service_state }}"
+    enabled: "{{ fluentbit_service_enabled }}"

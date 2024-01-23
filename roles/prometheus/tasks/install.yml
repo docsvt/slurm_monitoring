@@ -18,11 +18,11 @@
 
 - name: Setup prometheus config folder
   ansible.builtin.file:
-     path: "{{ item }}"
-     group: "{{ prometheus_group }}"
-     mode: "0750"
-     owner: root
-     state: "directory"
+    path: "{{ item }}"
+    group: "{{ prometheus_group }}"
+    mode: "0750"
+    owner: root
+    state: "directory"
   with_items:
     - "{{ prometheus_config_dir }}"
     - "{{ prometheus_config_dir }}/rules"
@@ -30,17 +30,17 @@
 
 - name: Setup prometheus database folder
   ansible.builtin.file:
-     path: "{{ prometheus_db_dir }}"
-     group: "{{ prometheus_group }}"
-     mode: "0755"
-     owner: "{{ prometheus_user }}"
-     state: "directory"
+    path: "{{ prometheus_db_dir }}"
+    group: "{{ prometheus_group }}"
+    mode: "755"
+    owner: "{{ prometheus_user }}"
+    state: "directory"
 
 - name: Download prometheus binary
   ansible.builtin.get_url:
     url: "{{ prometheus_binary_url }}"
     dest: "/tmp/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
-    mode: 0644
+    mode: "644"
   register: _download_archive
   until: _download_archive is succeeded
   retries: 5
@@ -62,7 +62,7 @@
   ansible.builtin.copy:
     src: "/tmp/prometheus-{{ prometheus_version }}.linux-amd64/{{ item }}"
     dest: "{{ prometheus_binary_install_dir }}/{{ item }}"
-    mode: 0755
+    mode: "755"
     owner: root
     group: root
     remote_src: false
@@ -76,7 +76,7 @@
   ansible.builtin.copy:
     src: "/tmp/prometheus-{{ prometheus_version }}.linux-amd64/{{ item }}/"
     dest: "{{ prometheus_config_dir }}/{{ item }}/"
-    mode: 0644
+    mode: "0644"
     owner: root
     group: root
     remote_src: false
@@ -88,10 +88,10 @@
 
 - name: Create systemd service unit
   ansible.builtin.template:
-    src: prometheus.service.j2
-    dest: "/etc/systemd/system/{{prometheus_service}}.service"
+    src: "prometheus.service.j2"
+    dest: "/etc/systemd/system/{{ prometheus_service }}.service"
     owner: root
     group: root
-    mode: 0644
+    mode: "644"
   notify:
     - restart prometheus

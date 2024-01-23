@@ -1,0 +1,12 @@
+# tasks file for elasticsearch
+- name: "Check target platform"
+  ansible.builtin.fail:
+    msg: This platform doesn't yet supported
+  when: ansible_system != "Linux"
+
+- name: "Check target OS"
+  ansible.builtin.fail:
+    msg: This OS doesn't yet supported
+  when:
+    - ansible_os_family != 'RedHat'
+    - ansible_os_family != 'Debian'

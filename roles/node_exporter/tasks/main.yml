@@ -10,7 +10,7 @@
 - name: Update prometheus file service discovery
   ansible.builtin.import_tasks:
     file: "update_prometheus.yml"
-  when: 
+  when:
     node_exporter_update_prometheus
 
 - name: Ensure node exporter service is started and enabled

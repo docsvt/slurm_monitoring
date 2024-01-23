@@ -1,0 +1,41 @@
+- name: Configure Elasticsearch 6 or below.
+  ansible.builtin.template:
+    src: "{{ item | basename }}.j2"
+    dest: "{{ item }}"
+    owner: root
+    group: elasticsearch
+    mode: "660"
+  with_items:
+    - /etc/elasticsearch/elasticsearch.yml
+    - /etc/elasticsearch/jvm.options
+  notify: restart elasticsearch
+  when: elk_es_version[0] | int < 7
+
+- name: Configure Elasticsearch 7+.
+  ansible.builtin.template:
+    src: "{{ item | basename }}.j2"
+    dest: "{{ item }}"
+    owner: root
+    group: elasticsearch
+    mode: "660"
+  with_items:
+    - /etc/elasticsearch/elasticsearch.yml
+    - /etc/elasticsearch/jvm.options.d/heap.options
+  notify: restart elasticsearch
+  when: elk_es_version[0] | int >= 7
+
+- name: Force a restart if configuration has changed.
+  ansible.builtin.meta: flush_handlers
+
+- name: Start Elasticsearch.
+  ansible.builtin.systemd:
+    name: elasticsearch
+    state: "{{ elk_es_service_state }}"
+    enabled: "{{ elk_es_service_enabled }}"
+
+- name: Make sure Elasticsearch is running before proceeding
+  ansible.builtin.wait_for:
+    host: "{{ elk_es_network_host }}"
+    port: "{{ elk_es_http_port }}"
+    delay: 3
+    timeout: 300

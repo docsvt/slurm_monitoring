@@ -3,19 +3,24 @@ all:
   hosts:
     prometheus:
       ansible_host: "192.168.200.61"
+    elk:
+      ansible_host: "192.168.200.62"
   children:
     monitoring:
       hosts:
         prometheus:
+        elk:
     prometheus:
       hosts:
         prometheus:
     node_exporter:
       hosts:
         prometheus:
+        elk:
     elk:
       hosts:
-        prometheus:
+        elk:
     fluentbit:
       hosts:
         prometheus:
+        elk:

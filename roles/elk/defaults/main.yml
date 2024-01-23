@@ -1,0 +1,29 @@
+---
+elk_es_version: "8.x"
+elk_es_package: "elasticsearch"
+elk_es_package_state: "present"
+
+elk_es_service_state: started
+elk_es_service_enabled: true
+
+elk_es_network_host: localhost
+elk_es_bind_network_host: "0.0.0.0"
+elk_es_http_port: 9200
+
+elk_es_heap_size_min: 2g
+elk_es_heap_size_max: 2g
+
+elk_es_extra_options: ''
+elk_es_deb_repo: "https://artifacts.elastic.co/packages/{{ elk_es_version }}/apt"
+
+elk_es_discovery_type: "single-node"
+
+elk_kibana_package: "kibana"
+elk_kibana_package_state: "present"
+elk_kibana_service_state: started
+elk_kibana_service_enabled: true
+elk_kibana_network_host: "{{ ansible_fqdn | default(ansible_host) | default(inventory_hostname) }}"
+elk_kibana_bind_network_host: "0.0.0.0"
+elk_kibana_http_port: 5601
+elk_kibana_elasticsearch_hosts:
+  - "http://localhost:9200"

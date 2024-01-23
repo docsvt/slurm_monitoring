@@ -35,4 +35,3 @@ node_exporter_update_prometheus: false
 node_exporter_prometheus_host: "prometheus"
 node_exporter_promethues_config_dir: "/etc/prometheus/"
 node_exporter_prometheus_labels:
-

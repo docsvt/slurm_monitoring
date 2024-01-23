@@ -1,0 +1,5 @@
+---
+- name: Install Kibana
+  ansible.builtin.package:
+    name: "{{ elk_kibana_package }}"
+    state: "{{ elk_kibana_package_state }}"

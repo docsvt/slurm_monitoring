@@ -1,0 +1,5 @@
+---
+- name: Install fluentbit package
+  ansible.builtin.package:
+    name: "{{ fluentbit_package }}"
+    state: "{{ fluentbit_package_state }}"

@@ -1,0 +1,12 @@
+proxy_env:
+  http_proxy: "http://192.168.200.10:20171"
+  https_proxy: "http://192.168.200.10:20171"
+elk_es_version: "8.x"
+elk_es_deb_repo: "https://mirror.yandex.ru/mirrors/elastic/8"
+elk_es_extra_options:
+  xpack.security.enabled: false
+  xpack.security.http.ssl:
+    enabled: false
+  xpack.security.transport.ssl:
+    enabled: false
+elk_kibana_network_host: "192.168.200.62"

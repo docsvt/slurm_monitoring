@@ -1,0 +1,14 @@
+---
+- name: "Restart elasticsearch"
+  listen: "restart elasticsearch"
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: "elasticsearch"
+    state: "restarted"
+
+- name: "Restart kibana"
+  listen: "restart kibana"
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: "kibana"
+    state: "restarted"

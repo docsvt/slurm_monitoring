@@ -1,0 +1,36 @@
+---
+# Repository
+fluentbit_repo_key_url: "https://packages.fluentbit.io/fluentbit.key"
+fluentbit_deb_repo: ""
+fluentbit_package: "fluent-bit"
+fluentbit_package_state: "present"
+fluentbit_service_state: "started"
+fluentbit_service_enabled: true
+
+
+# Fluent-bit configuration
+fluentbit_flush_interval: 5
+fluentbit_daemon: Off
+fluentbit_log_level: info
+fluentbit_http_server: Off
+fluentbit_http_listen: 0.0.0.0
+fluentbit_http_port: 2020
+fluentbit_inputs_conf: "inputs.conf"
+fluentbit_filters_conf: "filters.conf"
+fluentbit_outputs_conf: "outputs.conf"
+
+# Systemd input config
+fluentbit_input_systemd_tag: 'host.*'
+fluentbit_input_systemd_read_from_tail: Off
+#input_systemd_filters:
+#  - _SYSTEMD_UNIT=docker.service
+
+# Elasticsearch output config
+fluentbit_output_es_match: '*'
+fluentbit_output_es_host: '127.0.0.1'
+fluentbit_output_es_port: 9200
+fluentbit_output_es_buffer_size: False
+fluentbit_output_es_logstash_format: Off
+fluentbit_output_es_logstash_prefix: logstash
+fluentbit_output_es_index: fluent-bit
+fluentbit_output_es_type: _doc

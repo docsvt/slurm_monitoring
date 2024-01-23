@@ -1,0 +1,10 @@
+{{ ansible_managed | comment }}
+[INPUT]
+    Name systemd
+    Tag  {{ fluentbit_input_systemd_tag }}
+    Read_From_Tail {{ fluentbit_input_systemd_read_from_tail }}
+{% if fluentbit_input_systemd_filters is defined %}
+    {% for filter in fluentbit_input_systemd_filters %}
+    Systemd_Filter  {{ filter }}
+    {% endfor %}
+{% endif %}

@@ -1,0 +1,5 @@
+---
+- name: Install Elasticsearch
+  ansible.builtin.package:
+    name: "{{ elk_es_package }}"
+    state: "{{ elk_es_package_state }}"

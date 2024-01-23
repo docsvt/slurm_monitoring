@@ -2,7 +2,7 @@ prometheus_user: "prometheus"
 prometheus_group: "prometheus"
 prometheus_service: "prometheus"
 
-prometheus_version: 2.45.2 
+prometheus_version: "2.45.2"
 prometheus_binary_install_dir: '/usr/local/bin'
 prometheus_binary_url: "https://github.com/{{ _prometheus_repo }}/releases/download/v{{ prometheus_version }}/\
                         prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
@@ -96,4 +96,4 @@ prometheus_static_targets_files:
   - prometheus/targets/*.yml
   - prometheus/targets/*.json
 
-prometheus_alert_rules:  []
+prometheus_alert_rules: []

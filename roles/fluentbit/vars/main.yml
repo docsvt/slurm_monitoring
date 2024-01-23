@@ -1,0 +1,14 @@
+_fluentbit_gpg_key: "https://packages.fluentbit.io/fluentbit.key"
+_fluentbit_base_deb_repo: "https://packages.fluentbit.io/"
+_fluentbit_ubuntu_codename_map:
+  "18": "bionic"
+  "20": "focal"
+  "22": "jammy"
+  "16": "xenial"
+
+_fluentbit_debian_codename_map:
+  "12": "bookworm"
+  "11": "bullseye"
+  "10": "buster"
+  "8": "jessie"
+  "9": "stretch"

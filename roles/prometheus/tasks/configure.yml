@@ -6,7 +6,7 @@
     dest: "{{ prometheus_config_dir }}/rules/ansible_managed.rules"
     owner: root
     group: "{{ prometheus_group }}"
-    mode: 0640
+    mode: "0640"
     validate: "{{ prometheus_binary_install_dir }}/promtool check rules %s"
   when:
     - prometheus_alert_rules != []
@@ -20,7 +20,7 @@
     force: true
     owner: root
     group: "{{ prometheus_group }}"
-    mode: 0640
+    mode: "0640"
     validate: "{{ prometheus_binary_install_dir }}/promtool check config %s"
   notify:
     - reload prometheus
@@ -32,7 +32,7 @@
     force: true
     owner: root
     group: "{{ prometheus_group }}"
-    mode: 0640
+    mode: "0640"
 
 - name: Configure prometheus static targets
   ansible.builtin.copy:
@@ -42,6 +42,6 @@
     force: true
     owner: root
     group: "{{ prometheus_group }}"
-    mode: 0640
+    mode: "0640"
   with_dict: "{{ prometheus_targets }}"
   when: prometheus_targets != {}

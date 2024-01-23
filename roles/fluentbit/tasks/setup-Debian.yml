@@ -1,0 +1,44 @@
+---
+- name: Add required dependencies.
+  ansible.builtin.apt:
+    name:
+      - apt-transport-https
+      - gpg
+    state: present
+
+- name: Add flienbit apt key
+  ansible.builtin.apt_key:
+    url: "{{ _fluentbit_gpg_key }}"
+    state: present
+
+- name: Define repository address
+  when:
+    - fluentbit_deb_repo|length == 0
+  block:
+    - name: Getting Debian codename
+      ansible.builtin.set_fact:
+        _fluentbit_repo_codename: "{{ _fluentbit__debian_codename_map[ansible_facts['distribution_major_version']] }}"
+      when: ansible_facts['distribution'] == "Debian"
+
+    - name: Getting Ubuntu codename
+      ansible.builtin.set_fact:
+        _fluentbit_repo_codename: "{{ _fluentbit__ubuntu_codename_map[ansible_facts['distribution_major_version']] }}"
+      when: ansible_facts['distribution'] == "Ubuntu"
+
+    - name: Define flientbit repository address for Ubuntu
+      ansible.builtin.set_fact:
+        fluentbit_deb_repo: "{{ _fluentbit_base_deb_repo }}/ubuntu/{{ _fluentbit_repo_codename }}  {{ _fluentbit_repo_codename }}"
+      when:
+        - ansible_facts['distribution'] == "Ubuntu"
+
+    - name: Define flientbit repository address for Debian
+      ansible.builtin.set_fact:
+        fluentbit_deb_repo: "{{ _fluentbit_base_deb_repo }}/debian/{{ _fluentbit_repo_codename }}  {{ _fluentbit_repo_codename }}"
+      when:
+        - ansible_facts['distribution'] == "Debian"
+
+- name: Add fluentbit repository
+  ansible.builtin.apt_repository:
+    repo: "deb {{ fluentbit_deb_repo }} main"
+    state: present
+    update_cache: true

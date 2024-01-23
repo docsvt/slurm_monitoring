@@ -1,0 +1,8 @@
+---
+- name: Restart fluentbit
+  listen: "restart fluentbit"
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: "fluent-bit"
+    state: restarted

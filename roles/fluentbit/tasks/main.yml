@@ -1,0 +1,15 @@
+- name: Asserts
+  ansible.builtin.import_tasks:
+    file: "asserts.yml"
+
+- name: Prepare for installation fluentbit for supported family
+  ansible.builtin.include_tasks:
+    file: "setup-{{ ansible_os_family }}.yml"
+
+- name: Install fluentbit
+  ansible.builtin.import_tasks:
+    file: "install.yml"
+
+- name: Configure fluentbit
+  ansible.builtin.import_tasks:
+    file: "configure.yml"

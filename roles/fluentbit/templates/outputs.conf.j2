@@ -1,0 +1,13 @@
+{{ ansible_managed | comment }}
+[OUTPUT]
+    Name es
+    Match {{ fluentbit_output_es_match }}
+    Host  {{ fluentbit_output_es_host }}
+    Port  {{ fluentbit_output_es_port }}
+    Index {{ fluentbit_output_es_index }}
+    Type  {{ fluentbit_output_es_type }}
+    Logstash_Format {{ fluentbit_output_es_logstash_format }}
+    Logstash_Prefix {{ fluentbit_output_es_logstash_prefix }}
+    Generate_ID On
+    Suppress_Type_Name On
+    Buffer_Size {{ fluentbit_output_es_buffer_size }}

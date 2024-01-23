@@ -1,0 +1,25 @@
+---
+
+- name: Asserts
+  ansible.builtin.import_tasks:
+    file: "asserts.yml"
+
+- name: Prepare for installation elasticsearch suite for supoorted family
+  ansible.builtin.include_tasks:
+    file: "setup-{{ ansible_os_family }}.yml"
+  
+- name: Install elasticsearch
+  ansible.builtin.import_tasks:
+    file: "install_es.yml"
+
+- name: Install kibana
+  ansible.builtin.import_tasks:
+    file: "install_kibana.yml"
+
+- name: Configure elasticsearch
+  ansible.builtin.import_tasks:
+    file: "configure_es.yml"
+
+- name: Configure kibana
+  ansible.builtin.import_tasks:
+    file: "configure_kibana.yml"

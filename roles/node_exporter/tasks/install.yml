@@ -18,11 +18,11 @@
 
 - name: Setup node exporter config folder
   ansible.builtin.file:
-     path: "{{ node_exporter_config_dir }}"
-     group: "{{ node_exporter_group }}"
-     mode: "0750"
-     owner: root
-     state: "directory"
+    path: "{{ node_exporter_config_dir }}"
+    group: "{{ node_exporter_group }}"
+    mode: "0750"
+    owner: root
+    state: "directory"
 
 - name: Create textfile collector folder
   ansible.builtin.file:
@@ -37,7 +37,7 @@
   ansible.builtin.get_url:
     url: "{{ node_exporter_binary_url }}"
     dest: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
-    mode: 0644
+    mode: "0644"
   register: _download_archive
   until: _download_archive is succeeded
   retries: 5
@@ -59,7 +59,7 @@
   ansible.builtin.copy:
     src: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64/node_exporter"
     dest: "{{ node_exporter_binary_install_dir }}/node_exporter"
-    mode: 0755
+    mode: "0755"
     owner: root
     group: root
     remote_src: false
@@ -68,10 +68,10 @@
 
 - name: Create systemd service unit
   ansible.builtin.template:
-    src: node_exporter.service.j2
-    dest: "/etc/systemd/system/{{node_exporter_service}}.service"
+    src: "node_exporter.service.j2"
+    dest: "/etc/systemd/system/{{ node_exporter_service }}.service"
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   notify:
     - restart node_exporter
