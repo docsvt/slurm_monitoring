@@ -11,5 +11,8 @@ nodes:
       - name: ssh 
         host: "22061"
         guest: "22"
+      - name: prometheus
+        host: "9090"
+        guest: "9090"
     ssh_pub_keys: 
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL43ZBKy4GDFcbI5Od3I4ZrvheH4qNH5amExUqFHQIm4 fa@ansible-control"
