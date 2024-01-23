@@ -16,3 +16,25 @@ nodes:
         guest: "9090"
     ssh_pub_keys: 
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL43ZBKy4GDFcbI5Od3I4ZrvheH4qNH5amExUqFHQIm4 fa@ansible-control"
+    provisioner_shell:
+      - "echo '192.168.200.61 prometheus' >> /etc/hosts"
+      - "echo '192.168.200.62 elk' >> /etc/hosts"
+  - name: elk
+    box: ubuntu/jammy64
+    ram: 2046
+    cpu: 2
+    networks:
+      - name: proxy_back
+        ip: 192.168.200.62
+    forwards:
+      - name: ssh 
+        host: "22062"
+        guest: "22"
+      - name: kibana
+        host: "5601"
+        guest: "5601"
+    ssh_pub_keys: 
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL43ZBKy4GDFcbI5Od3I4ZrvheH4qNH5amExUqFHQIm4 fa@ansible-control"
+    provisioner_shell:
+      - "echo '192.168.200.61 prometheus' >> /etc/hosts"
+      - "echo '192.168.200.62 elk' >> /etc/hosts"
