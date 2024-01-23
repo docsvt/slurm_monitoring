@@ -7,7 +7,7 @@
 - name: Prepare for installation elasticsearch suite for supoorted family
   ansible.builtin.include_tasks:
     file: "setup-{{ ansible_os_family }}.yml"
-  
+
 - name: Install elasticsearch
   ansible.builtin.import_tasks:
     file: "install_es.yml"

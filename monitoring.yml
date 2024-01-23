@@ -16,11 +16,6 @@
       tags: node_exporter
       when: inventory_hostname in groups['node_exporter']
 
-    - name: Check prometheus_targets
-      ansible.builtin.debug:
-        var: prometheus_targets
-      tags: node_exporter
-
     - name: Reconfigure prometheus_target
       ansible.builtin.import_role:
         name: prometheus
