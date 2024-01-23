@@ -1,22 +1,25 @@
-- name: Setup prometheus stack node
+- name: Setup prometheus stack
   hosts: monitoring
   become: true
   gather_facts: true
-  tags: prometheus
 
   tasks:
     - name: Setup prometheus role
       ansible.builtin.import_role:
         name: prometheus
+      tags: prometheus
+      when: inventory_hostname in groups['prometheus']
 
     - name: Setup node_exporter role
       ansible.builtin.import_role:
-        name: node_exporters
+        name: node_exporter
+      tags: node_exporter
+      when: inventory_hostname in groups['node_exporter']
 
-    - name: Setup elk role
-      ansible.builtin.import_role:
-        name: elk
+    # - name: Setup elk role
+    #   ansible.builtin.import_role:
+    #     name: elk
 
-    - name: Setup fluentbit role
-      ansible.builtin.import_role:
-        name: fluentbit
+    # - name: Setup fluentbit role
+    #   ansible.builtin.import_role:
+    #     name: fluentbit

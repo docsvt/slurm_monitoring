@@ -1,0 +1,22 @@
+---
+- name: Install node exporter
+  ansible.builtin.import_tasks:
+    file: "install.yml"
+
+- name: Configure node exporter
+  ansible.builtin.import_tasks:
+    file: "configure.yml"
+
+- name: Update prometheus file service discovery
+  ansible.builtin.import_tasks:
+    file: "update_prometheus.yml"
+  when: 
+    node_exporter_update_prometheus
+
+- name: Ensure node exporter service is started and enabled
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: "{{ node_exporter_service}}"
+    state: started
+    enabled: true

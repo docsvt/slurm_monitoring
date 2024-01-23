@@ -2,8 +2,14 @@
 all:
   hosts:
     prometheus:
-      ansible_host: "192.168.101.61"
+      ansible_host: "192.168.200.61"
   children:
+    monitoring:
+      hosts:
+        prometheus:
+    prometheus:
+      hosts:
+        prometheus:
     node_exporter:
       hosts:
         prometheus:

@@ -1,0 +1,77 @@
+---
+- name: Setup node exporter group
+  ansible.builtin.group:
+    name: "{{ node_exporter_group }}"
+    system: true
+    state: present
+
+- name: Setup node exporter user
+  ansible.builtin.user:
+    name: "{{ node_exporter_user }}"
+    comment: "Node exporter user"
+    group: "{{ node_exporter_group }}"
+    create_home: false
+    system: true
+    home: "/tmp"
+    shell: "/bin/false"
+    state: present
+
+- name: Setup node exporter config folder
+  ansible.builtin.file:
+     path: "{{ node_exporter_config_dir }}"
+     group: "{{ node_exporter_group }}"
+     mode: "0750"
+     owner: root
+     state: "directory"
+
+- name: Create textfile collector folder
+  ansible.builtin.file:
+    path: "{{ node_exporter_textfile_dir }}"
+    state: directory
+    owner: "{{ node_exporter_user }}"
+    group: "{{ node_exporter_group }}"
+    mode: "0775"
+  when: node_exporter_textfile_dir | length > 0
+
+- name: Download node exporter binary
+  ansible.builtin.get_url:
+    url: "{{ node_exporter_binary_url }}"
+    dest: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+    mode: 0644
+  register: _download_archive
+  until: _download_archive is succeeded
+  retries: 5
+  delay: 2
+  delegate_to: localhost
+  check_mode: false
+  become: false
+
+- name: Unpack node exporter binaries
+  ansible.builtin.unarchive:
+    src: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+    dest: "/tmp"
+    creates: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64/node_exporter"
+  delegate_to: localhost
+  check_mode: false
+  become: false
+
+- name: Copy node_exporter binaries to the host
+  ansible.builtin.copy:
+    src: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64/node_exporter"
+    dest: "{{ node_exporter_binary_install_dir }}/node_exporter"
+    mode: 0755
+    owner: root
+    group: root
+    remote_src: false
+  notify:
+    - restart node_exporter
+
+- name: Create systemd service unit
+  ansible.builtin.template:
+    src: node_exporter.service.j2
+    dest: "/etc/systemd/system/{{node_exporter_service}}.service"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart node_exporter

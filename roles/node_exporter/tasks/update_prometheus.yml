@@ -1,0 +1,11 @@
+---
+
+- name: Update prometheus
+  ansible.builtin.template:
+    src: promethues_node.yml.j2
+    dest: "{{ node_exporter_promethues_config_dir }}/file_sd/config.yaml"
+    owner: root
+    group: root
+    mode: 0644
+  delegate_to: "{{ node_exporter_prometheus_host }}" 
+

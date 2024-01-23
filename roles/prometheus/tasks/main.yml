@@ -1,0 +1,16 @@
+---
+- name: Install prometheus
+  ansible.builtin.import_tasks:
+    file: install.yml
+
+- name: Configure prometheus
+  ansible.builtin.import_tasks:
+    file: "configure.yml"
+
+- name: Ensure prometheus service is started and enabled
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: "{{ prometheus_service }}"
+    state: started
+    enabled: true

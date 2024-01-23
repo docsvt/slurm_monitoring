@@ -1,0 +1,8 @@
+- name: Copy the node_exporter config file
+  ansible.builtin.template:
+    src: config.yml.j2
+    dest: "{{ node_exporter_config_dir }}/config.yaml"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart node_exporter

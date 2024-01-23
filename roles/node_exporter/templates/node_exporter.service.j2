@@ -1,0 +1,32 @@
+[Unit]
+Description=NodeExporter
+After=network-online.target
+
+[Service]
+TimeoutStartSec=0
+User={{node_exporter_user}}
+Group={{node_exporter_group}}
+ExecStart={{ node_exporter_binary_install_dir }}/node_exporter --web.listen-address={{ node_exporter_web_listen_address }} \
+{% for collector in node_exporter_enabled_collectors -%}
+{%   if not collector is mapping %}
+    '--collector.{{ collector }}' \
+{%   else -%}
+{%     set name, options = (collector.items()|list)[0] -%}
+    '--collector.{{ name }}' \
+{%     for k,v in options|dictsort %}
+    '--collector.{{ name }}.{{ k }}={{ v }}' \
+{%     endfor -%}
+{%   endif -%}
+{% endfor -%}
+{% for collector in node_exporter_disabled_collectors %}
+    '--no-collector.{{ collector }}' \
+{% endfor %}
+{% if node_exporter_tls_server_config | length > 0 or node_exporter_http_server_config | length > 0 %}
+    '--web.config.file={{node_exporter_config_dir}}/config.yaml'
+{% endif %}
+
+SyslogIdentifier={{ node_exporter_service }}
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

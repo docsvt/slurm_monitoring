@@ -1,0 +1,21 @@
+[Unit]
+Description=Prometheus
+After=network-online.target
+Requires=local-fs.target
+After=local-fs.target
+
+[Service]
+Type=simple
+User={{ prometheus_user }}
+Group={{ prometheus_group }}
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStart={{ prometheus_binary_install_dir }}/prometheus \
+  --config.file={{ prometheus_config_dir }}/prometheus.yml \
+  --storage.tsdb.path={{ prometheus_db_dir }}
+
+SyslogIdentifier={{ prometheus_service }}
+Restart=always
+TimeoutStopSec={{ prometheus_stop_timeout }}
+
+[Install]
+WantedBy=multi-user.target
