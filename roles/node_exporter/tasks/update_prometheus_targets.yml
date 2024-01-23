@@ -1,0 +1,15 @@
+---
+
+- name: Update prometheus targets
+  ansible.builtin.set_fact:
+    _node_exporter_prometheus_config: >
+      { "{{ ansible_fqdn | default(ansible_host) | default(inventory_hostname) }}":
+        [
+          {'targets':
+            ["{{ ansible_fqdn | default(ansible_host) | default(inventory_hostname) }}:{{ node_exporter_web_listen_port }}"]
+          }
+        ]
+      }
+- name: Extend prometheus_targets variable
+  ansible.builtin.set_fact:
+    prometheus_targets: "{{ prometheus_targets | ansible.builtin.combine(_node_exporter_prometheus_config, list_merge='append_rp') }}"

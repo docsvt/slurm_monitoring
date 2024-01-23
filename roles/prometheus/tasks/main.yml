@@ -7,6 +7,10 @@
   ansible.builtin.import_tasks:
     file: "configure.yml"
 
+- name: Configure static targets
+  ansible.builtin.import_tasks:
+    file: "static_targets.yml"
+
 - name: Ensure prometheus service is started and enabled
   become: true
   ansible.builtin.systemd:

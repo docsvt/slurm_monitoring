@@ -33,15 +33,5 @@
     owner: root
     group: "{{ prometheus_group }}"
     mode: "0640"
-
-- name: Configure prometheus static targets
-  ansible.builtin.copy:
-    content: |
-      {{ item.value | to_nice_yaml(indent=2, sort_keys=False) }}
-    dest: "{{ prometheus_config_dir }}/file_sd/{{ item.key }}.yml"
-    force: true
-    owner: root
-    group: "{{ prometheus_group }}"
-    mode: "0640"
-  with_dict: "{{ prometheus_targets }}"
-  when: prometheus_targets != {}
+  notify:
+    - restart prometheus

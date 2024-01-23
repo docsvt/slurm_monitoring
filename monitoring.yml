@@ -1,4 +1,4 @@
-- name: Setup prometheus stack
+- name: Setup monitoring stack
   hosts: monitoring
   become: true
   gather_facts: true
@@ -16,8 +16,20 @@
       tags: node_exporter
       when: inventory_hostname in groups['node_exporter']
 
-    - name: Add node_exporter host to prometheus
-      ansible.builtin.meta: noop
+    - name: Check prometheus_targets
+      ansible.builtin.debug:
+        var: prometheus_targets
+      tags: node_exporter
+
+    - name: Reconfigure prometheus_target
+      ansible.builtin.import_role:
+        name: prometheus
+        tasks_from: static_targets.yml
+      tags:
+        - node_exporter
+        - prometheus
+      when: inventory_hostname in groups['node_exporter']
+      delegate_to: prometheus
 
     - name: Setup elk role
       environment:

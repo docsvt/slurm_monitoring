@@ -1,8 +1,0 @@
-[
-  {
-    "targets": [ {{ ansible_fqdn | default(ansible_host) | default(inventory_hostname) }} ],
-    "labels": {
-      "<labelname>": "<labelvalue>", ...
-    }
-  },
-]

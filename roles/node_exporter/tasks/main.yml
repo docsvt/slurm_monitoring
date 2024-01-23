@@ -7,16 +7,14 @@
   ansible.builtin.import_tasks:
     file: "configure.yml"
 
-- name: Update prometheus file service discovery
+- name: Build node_exporter variables for prometheus target
   ansible.builtin.import_tasks:
-    file: "update_prometheus.yml"
-  when:
-    node_exporter_update_prometheus
+    file: "update_prometheus_targets.yml"
 
 - name: Ensure node exporter service is started and enabled
   become: true
   ansible.builtin.systemd:
     daemon_reload: true
-    name: "{{ node_exporter_service}}"
+    name: "{{ node_exporter_service }}"
     state: started
     enabled: true
